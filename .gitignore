@@ -1,85 +1,16 @@
-**/references/
-# Python
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
+*.pyc
 *.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# Virtual environments
-.venv
-env/
+.pytest_cache/
+.venv/
 venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-*/.ipynb_checkpoints/*
-
-# Data and models (large files)
-*.csv
-*.parquet
-*.pkl
-*.joblib
-*.h5
-*.onnx
-*.pt
-*.pth
-models/
-data/
-*.zip
-*.tar.gz
-
-# Logs and outputs
-*.log
-logs/
-output/
-results/
-
-# IDE and editor files
-.vscode/
-.idea/
-*.swp
-*.swo
-.DS_Store
-Thumbs.db
-
-# Azure / cloud specific (if any)
-*.azext
-.azure/
-
-# MLflow / experiment tracking
-mlruns/
-mlartifacts/
-
-# Environment variables
+build/
+dist/
 .env
-.env.local
-
-# OS generated files
+*.env
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
+
+# Planning docs (README, ARCHITECTURE, PROJECT_PLAN, BUILD_PLAN, ADDON,
+# PROJECT_FLOW, flow.md, notes) — kept locally, not pushed to GitHub.
+planning/
