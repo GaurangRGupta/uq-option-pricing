@@ -14,3 +14,12 @@ Thumbs.db
 # Planning docs (README, ARCHITECTURE, PROJECT_PLAN, BUILD_PLAN, ADDON,
 # PROJECT_FLOW, flow.md, notes) — kept locally, not pushed to GitHub.
 planning/
+
+# Paper/writeup notes — kept locally, not pushed to GitHub.
+paper/
+
+# Old scratch extraction file, unrelated to the project.
+paper4_extracted.txt
+
+# Frozen prior-session context file — local continuity notes, not pushed.
+claude-context.md
