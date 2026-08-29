@@ -20,6 +20,3 @@ paper/
 
 # Old scratch extraction file, unrelated to the project.
 paper4_extracted.txt
-
-# Frozen prior-session context file — local continuity notes, not pushed.
-claude-context.md
