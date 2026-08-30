@@ -25,10 +25,11 @@ __all__ = ["PINN"]
 
 
 class PINN(nn.Module):
-    def __init__(self, hidden_layers: int = 4, hidden_width: int = 32) -> None:
+    def __init__(self, hidden_layers: int = 4, hidden_width: int = 32, in_dim: int = 2) -> None:
+        """`in_dim` is 2 for (m, tau) under GBM, 3 for (m, v, tau) under
+        Heston -- same architecture either way, just one more input."""
         super().__init__()
         layers: list[nn.Module] = []
-        in_dim = 2  # (m, tau)
         for _ in range(hidden_layers):
             layers.append(nn.Linear(in_dim, hidden_width))
             layers.append(nn.Tanh())
