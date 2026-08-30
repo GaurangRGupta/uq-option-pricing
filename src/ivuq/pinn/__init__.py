@@ -1,12 +1,21 @@
 """Physics-informed neural network pricers.
 
-Start with the European option under GBM (this module). American
-free-boundary and Heston-dynamics versions build on the same PDE-residual
-machinery in later phases (see planning/RESEARCH_GAP_AND_ROADMAP.md
-Section 8).
+European option under GBM (N0/N1), American free-boundary under GBM (N2),
+and European under Heston (N0/N1-Heston, Phase 3b's first step) are all
+here. American under Heston (N2-Heston) is next -- see
+planning/RESEARCH_GAP_AND_ROADMAP.md Section 8.
 """
 
-from .config import EuropeanPINNConfig
+from .american import AmericanPINN
+from .config import AmericanPINNConfig, EuropeanPINNConfig, HestonEuropeanPINNConfig
 from .european import EuropeanPINN
+from .european_heston import EuropeanHestonPINN
 
-__all__ = ["EuropeanPINNConfig", "EuropeanPINN"]
+__all__ = [
+    "EuropeanPINNConfig",
+    "EuropeanPINN",
+    "AmericanPINNConfig",
+    "AmericanPINN",
+    "HestonEuropeanPINNConfig",
+    "EuropeanHestonPINN",
+]
