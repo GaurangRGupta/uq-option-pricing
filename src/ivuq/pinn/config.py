@@ -23,13 +23,19 @@ GBM -- validated against the closed-form `ivuq.pricing.heston.heston_price`
 rather than Black-Scholes. This is deliberately built and checked against a
 known solution *before* attempting the American-Heston free-boundary PINN,
 which has no closed form to validate against at all.
+
+`AmericanHestonPINNConfig` is Phase 3b's centerpiece, N2-Heston: the coupled
+solution+boundary network in `heston_free_boundary.py`, validated against
+the LSMC reference (`ivuq.pricing.heston_lsmc.lsmc_american_heston_price`)
+since no closed form exists. Put only -- see that module's docstring for
+why -- so unlike every other config here it has no `option_type` field.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 
-__all__ = ["EuropeanPINNConfig", "AmericanPINNConfig", "HestonEuropeanPINNConfig"]
+__all__ = ["EuropeanPINNConfig", "AmericanPINNConfig", "HestonEuropeanPINNConfig", "AmericanHestonPINNConfig"]
 
 
 @dataclass
@@ -73,6 +79,61 @@ class EuropeanPINNConfig:
     def __post_init__(self) -> None:
         if self.option_type not in ("call", "put"):
             raise ValueError(f"option_type must be 'call' or 'put', got {self.option_type!r}")
+
+
+@dataclass
+class AmericanHestonPINNConfig:
+    # Rates and Heston's own five parameters, same meaning as HestonEuropeanPINNConfig.
+    r: float = 0.03
+    q: float = 0.0
+    kappa: float = 2.0
+    theta: float = 0.04
+    xi: float = 0.4
+    rho: float = -0.5
+    v0: float = 0.04
+
+    # Domain, same convention as HestonEuropeanPINNConfig.
+    m_max: float = 3.0
+    v_max: float = 0.16
+    tau_max: float = 1.0
+
+    # Solution network: 3D input (m, v, tau), same shape as N1-Heston's.
+    sol_hidden_layers: int = 4
+    sol_hidden_width: int = 64
+    # Boundary network: 2D input (v, tau) -- a single surface, a simpler
+    # function to represent than the full price field, so smaller by default.
+    bnd_hidden_layers: int = 3
+    bnd_hidden_width: int = 32
+
+    # Collocation point counts, resampled every epoch.
+    n_interior: int = 4000
+    n_boundary_vt: int = 400  # value-matching / smooth-pasting / terminal-b points
+    n_terminal: int = 500  # solution-net terminal (tau=0) points
+    n_boundary_m_max: int = 200
+    n_boundary_v_max: int = 200
+
+    # Loss weights. No N0/N1 switch here (there's no meaningful "control"
+    # version of a free-boundary problem the way there is for a plain PDE
+    # fit) -- lambda_pde is always on. lambda_obstacle is weighted well
+    # above the rest: empirically, at 1.0 the mid-domain PDE fit sags below
+    # intrinsic value (down to several dollars negative on a $100 strike)
+    # while it's still converging, since nothing else in this formulation
+    # penalizes that the way the LCP's own obstacle term does for GBM/N2 --
+    # 5.0 keeps that from happening without needing the PDE fit itself to
+    # already be tight everywhere.
+    lambda_pde: float = 1.0
+    lambda_obstacle: float = 5.0
+    lambda_value_matching: float = 1.0
+    lambda_smooth_pasting: float = 1.0
+    lambda_terminal_u: float = 3.0
+    lambda_terminal_b: float = 3.0
+    lambda_boundary_m_max: float = 1.0
+    lambda_boundary_v_max: float = 1.0
+
+    lr: float = 2e-3
+    lr_decay_every: int = 2000
+    epochs: int = 6000
+    seed: int = 0
 
 
 @dataclass
