@@ -19,6 +19,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["pytest>=8.0", "hypothesis>=6.100"]
 fast = ["numba>=0.60"]
+baselines = ["scikit-learn>=1.4", "matplotlib>=3.8"]
 lse = ["lse-data"]
 
 [tool.setuptools.packages.find]
