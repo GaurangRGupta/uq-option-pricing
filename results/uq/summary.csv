@@ -1,0 +1,2 @@
+experiment,alpha,n_trials,mean_coverage,std_coverage,mean_width
+homoscedastic_oracle,0.1,30,0.8946888888888889,0.015133108847728225,0.09741062043479116
