@@ -1,0 +1,128 @@
+[
+ {
+  "id": "C01",
+  "spans": "B01",
+  "before": "For American options the problem is harder than for European ones, since the early-exercise boundary is unknown and no closed form exists \\cite{merton1973theory,hull2022options}.",
+  "after": "An American contract adds a second difficulty. Its holder can exercise early, the exercise boundary has to be found as part of the solution, and no closed-form price exists \\cite{merton1973theory,hull2022options}."
+ },
+ {
+  "id": "C02",
+  "spans": "near B01",
+  "before": "Lattice and simulation methods give accurate references \\cite{cox1979option,longstaff2001valuing}, but they do not say how wrong a fast surrogate is at a new point.",
+  "after": "Trees and Monte Carlo produce accurate reference values \\cite{cox1979option,longstaff2001valuing}. They cannot tell us, however, the error of a fast surrogate at an unseen point."
+ },
+ {
+  "id": "C03",
+  "spans": "B02",
+  "before": "\\emph{Classical pricing.} The Black-Scholes model \\cite{black1973pricing} and Merton's rational bounds \\cite{merton1973theory} give the European price and the no-arbitrage conditions we test.",
+  "after": "\\emph{Reference pricers.} Our European ground truth is the closed-form price of \\cite{black1973pricing}. The no-arbitrage conditions we test come from Merton's bounds \\cite{merton1973theory}."
+ },
+ {
+  "id": "C04",
+  "spans": "B03",
+  "before": "The binomial lattice of Cox, Ross and Rubinstein \\cite{cox1979option} handles early exercise and serves here as the American reference.",
+  "after": "For the American put we use the recombining tree of \\cite{cox1979option}, which compares holding and exercising at every node."
+ },
+ {
+  "id": "C05",
+  "spans": "B04, B05",
+  "before": "Barone-Adesi and Whaley \\cite{baroneadesi1987efficient} give a fast analytic approximation, and Longstaff and Schwartz \\cite{longstaff2001valuing} price American options by least-squares Monte Carlo.",
+  "after": "Two other routes exist: a quadratic analytic approximation \\cite{baroneadesi1987efficient}, and simulation in which a regression estimates the value of continuing \\cite{longstaff2001valuing}."
+ },
+ {
+  "id": "C06",
+  "spans": "near B05",
+  "before": "Stochastic volatility models \\cite{heston1993closed} are usually solved with finite differences, for example ADI schemes \\cite{inthout2010adi}. Textbook treatments of parity and early exercise are in \\cite{hull2022options}.",
+  "after": "Under stochastic volatility \\cite{heston1993closed}, grid methods such as ADI splitting \\cite{inthout2010adi} are a common choice. Standard texts such as \\cite{hull2022options} cover put-call parity and early exercise."
+ },
+ {
+  "id": "C07",
+  "spans": "same stock wording",
+  "before": "\\emph{Neural PDE solvers.} PINNs train a network so that a PDE residual, boundary terms and an initial or terminal term are small at sampled points \\cite{raissi2019physics}. The Deep Galerkin Method \\cite{sirignano2018dgm} follows a similar mesh-free idea and includes an American option example, and the deep BSDE method \\cite{han2018solving} targets high-dimensional PDEs. Applied work has used PINNs for Black-Scholes type equations \\cite{bai2022application}, for American options \\cite{gatta2023meshless} and for the Heston model \\cite{hainaut2024option}. To our knowledge, these studies focus on point accuracy rather than on calibrated error bands.",
+  "after": "\\emph{Networks as PDE solvers.} A PINN \\cite{raissi2019physics} is fitted by penalising, at random points, how far it is from satisfying the PDE, its boundary values and its initial or terminal value. DGM \\cite{sirignano2018dgm} is a close mesh-free relative and includes an American option among its tests. The deep BSDE solver \\cite{han2018solving} aims at PDEs in many dimensions. In finance, PINN variants have priced contracts under Black-Scholes type equations \\cite{bai2022application}, with early exercise \\cite{gatta2023meshless} and under Heston dynamics \\cite{hainaut2024option}. As far as we can tell, these papers measure price accuracy and do not report calibrated error bands."
+ },
+ {
+  "id": "C08",
+  "spans": "same stock wording",
+  "before": "\\emph{Labelled learners and shape constraints.} Tree ensembles \\cite{ho1995random,breiman2001random} and gradient boosting \\cite{friedman2001greedy} are strong tabular regressors. Input-convex networks \\cite{amos2017input} build convexity into the architecture, which matches the convexity of option prices in the underlying.",
+  "after": "\\emph{Learners trained on prices.} For tabular data, random forests \\cite{ho1995random,breiman2001random} and boosted trees \\cite{friedman2001greedy} are standard, well-tested choices. An input-convex network \\cite{amos2017input} is convex in chosen inputs by design, and option prices are convex in the underlying."
+ },
+ {
+  "id": "C09",
+  "spans": "B06, B07",
+  "before": "\\emph{Conformal prediction.} Conformal prediction gives finite-sample coverage under exchangeability \\cite{vovk2005algorithmic}. The inductive or split version uses a held-out calibration set \\cite{papadopoulos2002inductive}, and its regression guarantee is analysed in \\cite{lei2018distribution}.",
+  "after": "\\emph{Distribution-free bands.} When the data are exchangeable, a conformal set contains the truth with a stated probability for any sample size \\cite{vovk2005algorithmic}. A cheap variant fits the model once and sets the band width from residuals on points kept aside \\cite{papadopoulos2002inductive}; Lei et al.~\\cite{lei2018distribution} study what this variant guarantees for regression."
+ },
+ {
+  "id": "C10",
+  "spans": "same stock wording",
+  "before": "Normalised scores divide the residual by a local difficulty estimate \\cite{papadopoulos2011regression}. Conformalized quantile regression \\cite{romano2019conformalized} adapts width through quantile models, and Mondrian conformal regressors \\cite{bostrom2020mondrian} calibrate inside categories. A tutorial is given in \\cite{angelopoulos2023conformal}.",
+  "after": "Scaling each residual by an estimate of local difficulty makes the band width vary from point to point \\cite{papadopoulos2011regression}. CQR \\cite{romano2019conformalized} gets a similar effect from quantile models. Mondrian regressors \\cite{bostrom2020mondrian} repeat the calibration within each group of inputs. Angelopoulos and Bates \\cite{angelopoulos2023conformal} give an accessible overview."
+ },
+ {
+  "id": "C11",
+  "spans": "B08",
+  "before": "Let $S$ be the spot, $K$ the strike, $\\tau=T-t$ the time to expiry, $r$ the rate, $q$ the dividend yield and $\\sigma$ the volatility. We use moneyness $m=S/K$ and the price in strike units $u(m,\\tau)=V/K$. The Black-Scholes operator \\cite{black1973pricing,merton1973theory} in these coordinates is",
+  "after": "We write $S$ for the spot price and $K$ for the strike. Time to expiry is $\\tau=T-t$. The interest rate, dividend yield and volatility are $r$, $q$ and $\\sigma$. With moneyness $m=S/K$ and price per unit strike $u(m,\\tau)=V/K$, the pricing operator of \\cite{black1973pricing,merton1973theory} reads"
+ },
+ {
+  "id": "C12",
+  "spans": "B14",
+  "before": "We use tanh because the residual needs $u_{mm}$, and the second derivative of a ReLU network is zero almost everywhere. Derivatives come from automatic differentiation in PyTorch \\cite{paszke2019pytorch}.",
+  "after": "The residual contains $u_{mm}$. A ReLU network is piecewise linear, so this term would vanish except on a set of measure zero; tanh avoids the problem. We obtain $u_m$, $u_{mm}$ and $u_\\tau$ with the automatic differentiation of PyTorch \\cite{paszke2019pytorch}."
+ },
+ {
+  "id": "C13",
+  "spans": "B09",
+  "before": "Let $q$ be the $k$-th smallest score with",
+  "after": "Sort the scores and take $q$ as the one in position"
+ },
+ {
+  "id": "C14",
+  "spans": "B09",
+  "before": "which is the finite-sample quantile of split conformal \\cite{lei2018distribution}. The band in dollars at a test point is",
+  "after": "counting from the smallest. This rank is the finite-sample correction of split conformal \\cite{lei2018distribution}. At a test point, the dollar band is"
+ },
+ {
+  "id": "C15",
+  "spans": "B10",
+  "before": "\\big[K\\hat u-Kq(1+\\kappa|R|),\\;K\\hat u+Kq(1+\\kappa|R|)\\big]. \\label{eq:band}",
+  "after": "K\\hat u-w\\;\\le\\;V\\;\\le\\;K\\hat u+w,\\qquad w=Kq\\,(1+\\kappa|R|). \\label{eq:band}"
+ },
+ {
+  "id": "C16",
+  "spans": "B11",
+  "before": "If calibration and test points are exchangeable, the band covers the true price with probability at least $1-\\alpha$ \\cite{lei2018distribution}.",
+  "after": "Under exchangeable calibration and test points, the chance that this band misses the true price is at most $\\alpha$ \\cite{lei2018distribution}."
+ },
+ {
+  "id": "C17",
+  "spans": "B12",
+  "before": "and Mondrian \\cite{bostrom2020mondrian}, which computes $q$ separately in six buckets, $m<0.9$, $0.9\\le m\\le1.1$, $m>1.1$, each crossed with $\\tau<0.4$ and $\\tau\\ge0.4$.",
+  "after": "and Mondrian \\cite{bostrom2020mondrian}. The Mondrian version keeps its own $q$ for each of six cells: three moneyness ranges (below 0.9, from 0.9 to 1.1, above 1.1) times two tenor ranges (below 0.4 and from 0.4 up)."
+ },
+ {
+  "id": "C18",
+  "spans": "B13, B15",
+  "before": "We fix $r=0.03$, $q=0$, $\\sigma=0.2$ and $K=100$. We train N0, N1 and N2 with seeds 0 to 9 (30 runs). For each seed we draw 4000 points with $m\\sim U[0.6,1.4]$ and $\\tau\\sim U[0.05,1]$ and label them with the Black-Scholes formula (European) or the 500-step binomial tree (American).",
+  "after": "Every run uses a 100-dollar strike, no dividends, a 3\\% rate and 20\\% volatility ($K=100$, $q=0$, $r=0.03$, $\\sigma=0.2$). N0, N1 and N2 are each trained with seeds 0 to 9 (30 runs). Each seed gets its own pool of 4000 points, $m\\sim U[0.6,1.4]$ and $\\tau\\sim U[0.05,1]$. European labels come from the closed form; American labels come from a CRR tree with 500 steps."
+ },
+ {
+  "id": "C19",
+  "spans": "B16",
+  "before": "The Black-Scholes-embedded network is the best model outside the box (\\usd 0.13), since it builds in the pricing formula.",
+  "after": "Outside the box the best model is the Black-Scholes-embedded network (\\usd 0.13), because the formula itself is part of its architecture."
+ },
+ {
+  "id": "C20",
+  "spans": "B17",
+  "before": "\\caption{Labelled baselines for the American put (MAE in \\usd, $K=100$).",
+  "after": "\\caption{American put: accuracy of the labelled regressors (MAE in \\usd, $K=100$)."
+ },
+ {
+  "id": "C21",
+  "spans": "A02 (rewrite requested)",
+  "before": "The authors thank Dr. Manish Kumar Tiwari for guidance. AI-use disclosure: an AI assistant (Grok Bot) wrote the experiment scripts, drew the figures and drafted the text of all sections; the authors reviewed, revised and verified all content and take responsibility for it.",
+  "after": "Dr. Manish Kumar Tiwari supervised this project, and we thank him for his guidance. Use of AI: Grok Bot, an AI assistant, produced the experiment scripts, the figures and first drafts of every section. We checked, edited and verified all of it, and we are responsible for the content."
+ }
+]

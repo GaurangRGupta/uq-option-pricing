@@ -1,0 +1,4 @@
+symbol,rows,dates,first,last,trading_days_in_span,weekend_dates,median_rows_per_day,median_rows_per_day_2026,median_expiries_per_day,median_strikes_per_day,max_dte,median_dte
+AAPL,181908,1300,2019-02-09,2026-10-09,1925,48,140.0,192.0,3.0,30.0,67,28.0
+NVDA,185022,1295,2019-02-09,2026-10-09,1924,48,158.0,170.0,3.0,31.0,67,28.0
+SPY,183614,1288,2019-02-09,2026-10-09,1925,48,142.0,210.0,3.0,34.0,66,28.0

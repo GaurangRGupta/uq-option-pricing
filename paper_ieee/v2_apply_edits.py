@@ -1,0 +1,72 @@
+"""Apply the v2 (N2 fix) edits to main.tex (from main_v2pre.tex). Exact, asserted.
+Writes main.tex and v2_changes.json (consumed to build V2_CHANGES.md)."""
+import json
+from pathlib import Path
+H = Path(__file__).resolve().parent
+s = (H / "main_v2pre.tex").read_text()
+E = [
+("Title", r"\title{Conformal Uncertainty Quantification for Physics-Informed American Option Pricing: The Difficulty Score Must Respect Complementarity}",
+ r"\title{Mondrian and Residual-Weighted Conformal Uncertainty Bands for Physics-Informed American Option Pricing}"),
+("Abstract", r"Labelled regressors are more accurate inside their training region, but kernel and polynomial ridge fail outside it. Split conformal reaches nominal marginal coverage for every model, including an American PINN that overprices by \usd 3.13 on average: the bias costs width, not coverage.",
+ r"With 3000 labels, eight of ten labelled regressors are more accurate inside their training region, but kernel and polynomial ridge fail outside it. Split conformal reaches nominal marginal coverage for every model. A fix to a weak complementarity penalty cuts the American PINN's bias to \usd 0.22 but adds calendar violations (16.8\% of pairs)."),
+("Abstract", r"The raw PDE residual is uninformative for the American put (rank correlation $-0.01$) and widens the band, in part because a positive residual is correct in the exercise region. The complementarity residual $\min(L[u],u-h)$ tracks the error (rank correlation 0.77) and narrows the band from \usd 10.05 to \usd 9.01 at equal coverage. Mondrian buckets give the best worst-bucket coverage (0.86 against 0.71).",
+ r"The raw PDE residual is uninformative for the American put (rank correlation 0.01) and widens the band. The complementarity residual $\min(L[u],u-h)$ is a better score (rank correlation 0.38; band \usd 1.13 against \usd 1.97), but plain split is narrower (\usd 0.93). Mondrian buckets give the narrowest band (\usd 0.85) and the best worst-bucket coverage (0.86 against 0.66)."),
+("I. Introduction, contribution 2", r"\item Evidence that the raw PDE residual $|L[u]|$ is a poor difficulty score for the American put, and that the complementarity residual $|\min(L[u],u-h)|$ is a good one. The residual has to follow the structure of the problem.",
+ r"\item Evidence that Mondrian buckets give the most even coverage, which we see as the main practical result. The raw PDE residual $|L[u]|$ is a poor difficulty score for the American put. The complementarity residual $|\min(L[u],u-h)|$ is a better one, but it does not beat plain split on width once the PINN is unbiased."
+ "\n" r"\item A diagnosis and fix of an upward bias in the American PINN: the product form of the complementarity penalty barely penalised a positive residual."),
+("I. Introduction, limits", r"Our American PINN has a systematic upward bias of \usd 3.13 on a \usd 100 strike.",
+ r"After the fix, our American PINN keeps an upward bias of \usd 0.22 on a \usd 100 strike, and it breaks the calendar check on 16.8\% of pairs."),
+("III-B Networks and losses", r"The American loss N2 replaces the PDE term with three LCP penalties, each with weight 1,",
+ r"The American loss N2 replaces the PDE term with three LCP penalties,"),
+("III-B Networks and losses, eq. (4)", r"\overline{\mathrm{relu}(-L[u])^2}+\overline{\mathrm{relu}(h-u)^2}+\overline{(L[u](u-h))^2}, \label{eq:la}",
+ r"\overline{\mathrm{relu}(-L[u])^2}+\overline{\mathrm{relu}(h-u)^2}+10\,\overline{\min(L[u],u-h)^2}, \label{eq:la}"),
+("III-B Networks and losses", r"plus the same terminal and boundary terms. All runs use fixed weights.",
+ r"plus the same terminal and boundary terms, except that the put takes its American value $u(0,\tau)=1$ at $m=0$. All runs use fixed weights."),
+("III-C Labelled baselines", r"Table~\ref{tab:base} lists ten labelled regressors from an earlier project run.",
+ r"Table~\ref{tab:base} lists ten labelled regressors from an earlier project run. We retrain its PINN row with the N2 loss above."),
+("IV-A Setup", r"The protocol was written before any coverage was computed and was not changed.",
+ r"The protocol was written before any coverage was computed and was not changed. We later fixed the N2 loss on a separate validation grid and wrote a second protocol before computing any coverage of the fixed model."),
+("IV-A Setup", r"The 30 trainings took 12 min 24 s in total; one run took 157 s (N0), 167 s (N1) and 229 s (N2) on average. All conformal evaluations took 62 s.",
+ r"One run took 157 s (N0), 167 s (N1) and 165 s (N2) on average; the 10 N2 runs took 5 min 20 s in total. All conformal evaluations took 33 s."),
+("Table I caption", r"Earlier project run on a separate $25\times9$ test grid, mean of 2 seeds.",
+ r"Labelled rows: earlier project run on a separate $25\times9$ test grid, mean of 2 seeds. PINN row: N2 retrained with the loss of Section III on the same grid."),
+("IV-B Labelled baselines", r"With 3000 labels, kernel ridge reaches \usd 0.005 against \usd 2.313 for the N2 PINN of that run, and all ten labelled models beat the PINN; with 50 labels, nine of ten do.",
+ r"With 3000 labels, kernel ridge reaches \usd 0.005 against \usd 0.231 for the PINN, and eight of ten labelled models beat it; with 50 labels, only two of ten do."),
+("IV-B Labelled baselines", r"while the PINN stays at \usd 2.55, close to its full-grid error. The PINN also has no calendar violations. Outside the box the best model is the Black-Scholes-embedded network (\usd 0.13), because the formula itself is part of its architecture.",
+ r"while the PINN stays at \usd 0.23, close to its full-grid error. The PINN breaks the finite-difference calendar check in 20\% of cases, in the middle of the labelled models. Outside the box the best model is the Black-Scholes-embedded network (\usd 0.13), because the formula itself is part of its architecture; the PINN is next."),
+("IV-C Point accuracy", r"N2 has an MAE of \usd 3.13 that is almost all bias: it prices 99.6\% of points above the binomial reference.",
+ r"N2 has an MAE of \usd 0.29 and a bias of +\usd 0.22: it prices 83.7\% of points above the binomial reference."),
+("IV-C Point accuracy", r"For N2 it carries no signal ($\rho=-0.01$), while the LCP residual has $\rho=0.77$. Fig.~\ref{fig:resid} shows the pattern for one seed. The raw residual stays in a narrow band (median 0.057) whatever the price error.",
+ r"For N2 it carries no signal ($\rho=0.01$), while the LCP residual has $\rho=0.38$. Fig.~\ref{fig:resid} shows the pattern for one seed. The raw residual (median 0.0071) shows no trend with the price error."),
+("IV-C Point accuracy", r"The LCP residual removes this part and rises with the error.",
+ r"The LCP residual removes this part. It rises with the error mainly in the exercise region, where it equals the gap $u-h$."),
+("Fig. 1 caption", r"The raw residual stays in a narrow band for any error; the LCP residual rises with the error.}",
+ r"The raw residual shows no trend with the error; the LCP residual rises with it mainly in the exercise region (the curved branch).}"),
+("IV-D Conformal bands", r"This holds for N2 too, despite its bias. The finite-sample guarantee does its job; the bias shows up as width.",
+ r"This also held for N2 before we fixed its bias. The finite-sample guarantee did its job, and the bias showed up as width (split band \usd 10.05)."),
+("IV-D Conformal bands", r"and the N2 band (\usd 11.89 against \usd 10.05).",
+ r"and the N2 band (\usd 1.97 against \usd 0.93)."),
+("IV-D Conformal bands", r"For N2, the LCP residual gives \usd 9.01 against \usd 10.05 at the same coverage, but its worst bucket (0.71) is no better than split. Mondrian gives the narrowest bands and the best worst-bucket coverage (0.86 against 0.71 for split on N2). Fig.~\ref{fig:bucket} shows that split over-covers short tenors and under-covers deep in-the-money long tenors (0.71), while Mondrian keeps each bucket between 0.902 and 0.910 on average. Fig.~\ref{fig:slice} shows the bands on one slice: they contain the reference, but they are wide because the PINN sits above it.",
+ r"For N2, the LCP residual narrows the band against $|L[u]|$ (\usd 1.13 against \usd 1.97) but not against split (\usd 0.93), and its worst bucket (0.64) is below split's (0.66). Mondrian gives the narrowest bands and the best worst-bucket coverage (0.86 against 0.66 for split on N2). Fig.~\ref{fig:bucket} shows that split under-covers deep in-the-money short tenors (0.69) and over-covers near-the-money long tenors (0.999), while Mondrian keeps each bucket between 0.901 and 0.906 on average. Fig.~\ref{fig:slice} shows the bands on one slice: they contain the reference and stay close to it, but the lower edges fall below zero far out of the money."),
+("Fig. 3 caption", r"both contain the binomial price; the PINN lies above it, so the bands are wide and the lower edges fall below zero out of the money.}",
+ r"both contain the binomial price. The PINN lies slightly above it, most visibly out of the money, and the lower edges fall below zero far out of the money.}"),
+("IV-F Static arbitrage", r"The PINN prices break strike convexity in 12\% (N1) and 26\% (N2) of checkable triples. A constant split band keeps the convexity and calendar rates of the point price, since it only adds a term linear in $K$, but its lower edge raises monotonicity violations from 0.010 to 0.059. Bands of varying width add violations. About a third of lower edges are negative.",
+ r"The PINN prices break strike convexity in 12\% of checkable triples for both N1 and N2. The N2 point prices also break the calendar check in 16.8\% of pairs, and 2.4\% of these prices are negative. A constant split band keeps the convexity and calendar rates of the point price, since it only adds a term linear in $K$, but its lower edge raises monotonicity violations from 0.039 to 0.053. Bands of varying width add violations. About a fifth of lower edges are negative."),
+("V. Discussion, why keep the PINN", r"The cost of the bias is width, so a better PINN gives narrower bands at once, as N1 against N0 shows.",
+ r"The cost of the bias is width, so a better PINN gives narrower bands at once, as N1 against N0 shows, and as N2 before and after its fix shows (\usd 10.05 against \usd 0.93)."),
+("V. Discussion, which residual", r"The LCP residual fixes this and is a much better error proxy. Still, Mondrian buckets beat it on conditional coverage here, so the two ideas can be combined in future work.",
+ r"The LCP residual fixes this and is a better error proxy than $|L[u]|$. Once the bias is fixed, though, no residual scaling beats plain split on width, and Mondrian buckets give the most even coverage. The two ideas can be combined in future work."),
+("V. Discussion, the N2 bias", r"\emph{The N2 bias.} N2 is above the reference almost everywhere, also deep out of the money where early exercise hardly matters. We did not tune N2 after seeing these numbers. Candidate causes are the fixed loss weights and the boundary at $m=0$, where our code imposes the European value $e^{-r\tau}$ rather than the American value 1. We have not tested these causes.",
+ r"\emph{The N2 bias.} Our first N2 overpriced by \usd 3.13 on average. We traced this to the complementarity penalty. Its product form $L[u](u-h)$ is tiny where $u-h$ is small, so a network with $L[u]>0$ in the continuation region paid almost nothing. We replaced it with $\min(L[u],u-h)$ at weight 10 and set the American value 1 at $m=0$. The boundary change alone barely moved the bias. We chose the fix on a separate validation grid, not on calibration or test points. The fixed N2 keeps a bias of +\usd 0.22, largest for deep out-of-the-money long tenors (+\usd 0.35). It breaks the calendar check more often than before, and it sits below intrinsic value by more than one cent on 11\% of pool points."),
+("VI. Conclusion", r"Marginal coverage held for every model, including a biased American PINN. The PDE loss shrank the European band about 20 times. Labelled regressors remain more accurate in-sample.",
+ r"Marginal coverage held for every model, both before and after we fixed a bias in the American PINN. The PDE loss shrank the European band about 20 times. With 3000 labels, most labelled regressors remain more accurate in-sample."),
+("VI. Conclusion", r"The raw PDE residual is a poor score for the American put, and the complementarity residual is a good one. Future work will fix the N2 bias,",
+ r"The raw PDE residual is a poor score for the American put. The complementarity residual is better, but Mondrian buckets are the most useful choice in practice. Future work will remove the calendar violations and obstacle slack of N2,"),
+]
+log = []
+for sec, a, b in E:
+    assert s.count(a) == 1, (sec, s.count(a), a[:60])
+    s = s.replace(a, b); log.append({"section": sec, "old": a, "new": b})
+(H / "main.tex").write_text(s)
+(H / "v2_changes.json").write_text(json.dumps(log, indent=1))
+print(len(E), "edits")

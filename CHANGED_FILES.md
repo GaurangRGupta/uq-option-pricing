@@ -1,0 +1,395 @@
+# Files for the new branch (base: dev @ 958151f)
+
+Total files: 371 | new: 280 | modified: 4 | unchanged: 87
+
+## Modified vs dev
+- .gitignore
+- src/ivuq/pinn/config.py
+- src/ivuq/pinn/free_boundary.py
+- src/ivuq/pinn/train_american.py
+
+## New (grouped)
+- data/dolthub/ASSESSMENT.md/ (1 files)
+- data/dolthub/q_total_rows.txt/ (1 files)
+- data/dolthub/qc/ (10 files)
+- data/dolthub/qc_extra.py/ (1 files)
+- data/dolthub/qc_slice.py/ (1 files)
+- paper_ieee/IEEEtran.bst/ (1 files)
+- paper_ieee/IEEEtran.cls/ (1 files)
+- paper_ieee/README.txt/ (1 files)
+- paper_ieee/V2_CHANGES.md/ (1 files)
+- paper_ieee/author_block.txt/ (1 files)
+- paper_ieee/build_docx.py/ (1 files)
+- paper_ieee/citation_audit.md/ (1 files)
+- paper_ieee/cover_letter.txt/ (1 files)
+- paper_ieee/cover_letter_v2pre.txt/ (1 files)
+- paper_ieee/figures/data/ (2 files)
+- paper_ieee/figures/fig_p2_bucket_coverage_a10.pdf/ (1 files)
+- paper_ieee/figures/fig_p2_bucket_coverage_a10.png/ (1 files)
+- paper_ieee/figures/fig_p2_interval_slice_tau050.pdf/ (1 files)
+- paper_ieee/figures/fig_p2_interval_slice_tau050.png/ (1 files)
+- paper_ieee/figures/fig_p2_residual_vs_error.pdf/ (1 files)
+- paper_ieee/figures/fig_p2_residual_vs_error.png/ (1 files)
+- paper_ieee/figures/v1/ (8 files)
+- paper_ieee/ieee.csl/ (1 files)
+- paper_ieee/main.bbl/ (1 files)
+- paper_ieee/main.docx/ (1 files)
+- paper_ieee/main.odt/ (1 files)
+- paper_ieee/main.pdf/ (1 files)
+- paper_ieee/main.tex/ (1 files)
+- paper_ieee/main_diff.bbl/ (1 files)
+- paper_ieee/main_diff.pdf/ (1 files)
+- paper_ieee/main_diff.tex/ (1 files)
+- paper_ieee/main_v1.pdf/ (1 files)
+- paper_ieee/main_v1.tex/ (1 files)
+- paper_ieee/main_v2_diff.bbl/ (1 files)
+- paper_ieee/main_v2_diff.pdf/ (1 files)
+- paper_ieee/main_v2_diff.tex/ (1 files)
+- paper_ieee/main_v2pre.pdf/ (1 files)
+- paper_ieee/main_v2pre.tex/ (1 files)
+- paper_ieee/main_v3pre.pdf/ (1 files)
+- paper_ieee/main_v3pre.tex/ (1 files)
+- paper_ieee/make_citation_audit.py/ (1 files)
+- paper_ieee/make_tables.py/ (1 files)
+- paper_ieee/make_tables_v1.py/ (1 files)
+- paper_ieee/references.bib/ (1 files)
+- paper_ieee/references_ieeeabbrv.bib/ (1 files)
+- paper_ieee/references_verification.md/ (1 files)
+- paper_ieee/similarity/changes.json/ (1 files)
+- paper_ieee/similarity/changes.md/ (1 files)
+- paper_ieee/similarity/make_abbrev_bib.py/ (1 files)
+- paper_ieee/similarity/match_inventory.md/ (1 files)
+- paper_ieee/similarity/rewrite_v2.py/ (1 files)
+- paper_ieee/tables/SOURCES.md/ (1 files)
+- paper_ieee/tables/table1_baselines.csv/ (1 files)
+- paper_ieee/tables/table1_baselines.tex/ (1 files)
+- paper_ieee/tables/table2_point.csv/ (1 files)
+- paper_ieee/tables/table2_point.tex/ (1 files)
+- paper_ieee/tables/table3_conformal.csv/ (1 files)
+- paper_ieee/tables/table3_conformal.tex/ (1 files)
+- paper_ieee/tables/table4_p3.csv/ (1 files)
+- paper_ieee/tables/table4_p3.tex/ (1 files)
+- paper_ieee/tables/table4_p3_homoscedastic.csv/ (1 files)
+- paper_ieee/tables/table5_p4.csv/ (1 files)
+- paper_ieee/tables/table5_p4.tex/ (1 files)
+- paper_ieee/tables/values.tex/ (1 files)
+- paper_ieee/turnitin_notes.md/ (1 files)
+- paper_ieee/v2_apply_edits.py/ (1 files)
+- paper_ieee/v2_changes.json/ (1 files)
+- paper_ieee/v2_update_plan.md/ (1 files)
+- paper_ieee/venue_note.md/ (1 files)
+- paper_ieee/venue_research.md/ (1 files)
+- results/uq/conformal_sandbox.png/ (1 files)
+- results/uq/heteroscedastic_compare.csv/ (1 files)
+- results/uq/homoscedastic_trials.csv/ (1 files)
+- results/uq/paper_v2/ (164 files)
+- results/uq/pinn_vs_bs.csv/ (1 files)
+- results/uq/summary.csv/ (1 files)
+- scripts/paper_common.py/ (1 files)
+- scripts/paper_figures.py/ (1 files)
+- scripts/paper_make_pools.py/ (1 files)
+- scripts/paper_models.py/ (1 files)
+- scripts/paper_p1p2_conformal.py/ (1 files)
+- scripts/paper_p3_synthetic.py/ (1 files)
+- scripts/paper_p4_arbitrage.py/ (1 files)
+- scripts/paper_signed_error.py/ (1 files)
+- scripts/paper_train_pinns.py/ (1 files)
+- scripts/run_conformal_sandbox.py/ (1 files)
+- scripts/v2_baseline_counts.py/ (1 files)
+- scripts/v2_baseline_pinn_row.py/ (1 files)
+- scripts/v2_compare.py/ (1 files)
+- scripts/v2_diag_experiment.py/ (1 files)
+- scripts/v2_diag_v1models.py/ (1 files)
+- scripts/v2_obstacle_slack.py/ (1 files)
+- src/ivuq/uq/ (4 files)
+- tests/test_pinn_american_lcp_form.py/ (1 files)
+- tests/test_uq_conformal.py/ (1 files)
+- tests/test_uq_protocol.py/ (1 files)
+- uv.lock/ (1 files)
+
+## Full list of new files
+- data/dolthub/ASSESSMENT.md
+- data/dolthub/q_total_rows.txt
+- data/dolthub/qc/coverage.csv
+- data/dolthub/qc/dates_per_year_AAPL.csv
+- data/dolthub/qc/dates_per_year_NVDA.csv
+- data/dolthub/qc/dates_per_year_SPY.csv
+- data/dolthub/qc/extra.json
+- data/dolthub/qc/gaps_over_5d_AAPL.csv
+- data/dolthub/qc/gaps_over_5d_NVDA.csv
+- data/dolthub/qc/gaps_over_5d_SPY.csv
+- data/dolthub/qc/quote_quality.csv
+- data/dolthub/qc/summary.json
+- data/dolthub/qc_extra.py
+- data/dolthub/qc_slice.py
+- paper_ieee/IEEEtran.bst
+- paper_ieee/IEEEtran.cls
+- paper_ieee/README.txt
+- paper_ieee/V2_CHANGES.md
+- paper_ieee/author_block.txt
+- paper_ieee/build_docx.py
+- paper_ieee/citation_audit.md
+- paper_ieee/cover_letter.txt
+- paper_ieee/cover_letter_v2pre.txt
+- paper_ieee/figures/data/fig_p2_interval_slice.csv
+- paper_ieee/figures/data/fig_p2_residual_vs_error.csv
+- paper_ieee/figures/fig_p2_bucket_coverage_a10.pdf
+- paper_ieee/figures/fig_p2_bucket_coverage_a10.png
+- paper_ieee/figures/fig_p2_interval_slice_tau050.pdf
+- paper_ieee/figures/fig_p2_interval_slice_tau050.png
+- paper_ieee/figures/fig_p2_residual_vs_error.pdf
+- paper_ieee/figures/fig_p2_residual_vs_error.png
+- paper_ieee/figures/v1/data/fig_p2_interval_slice.csv
+- paper_ieee/figures/v1/data/fig_p2_residual_vs_error.csv
+- paper_ieee/figures/v1/fig_p2_bucket_coverage_a10.pdf
+- paper_ieee/figures/v1/fig_p2_bucket_coverage_a10.png
+- paper_ieee/figures/v1/fig_p2_interval_slice_tau050.pdf
+- paper_ieee/figures/v1/fig_p2_interval_slice_tau050.png
+- paper_ieee/figures/v1/fig_p2_residual_vs_error.pdf
+- paper_ieee/figures/v1/fig_p2_residual_vs_error.png
+- paper_ieee/ieee.csl
+- paper_ieee/main.bbl
+- paper_ieee/main.docx
+- paper_ieee/main.odt
+- paper_ieee/main.pdf
+- paper_ieee/main.tex
+- paper_ieee/main_diff.bbl
+- paper_ieee/main_diff.pdf
+- paper_ieee/main_diff.tex
+- paper_ieee/main_v1.pdf
+- paper_ieee/main_v1.tex
+- paper_ieee/main_v2_diff.bbl
+- paper_ieee/main_v2_diff.pdf
+- paper_ieee/main_v2_diff.tex
+- paper_ieee/main_v2pre.pdf
+- paper_ieee/main_v2pre.tex
+- paper_ieee/main_v3pre.pdf
+- paper_ieee/main_v3pre.tex
+- paper_ieee/make_citation_audit.py
+- paper_ieee/make_tables.py
+- paper_ieee/make_tables_v1.py
+- paper_ieee/references.bib
+- paper_ieee/references_ieeeabbrv.bib
+- paper_ieee/references_verification.md
+- paper_ieee/similarity/changes.json
+- paper_ieee/similarity/changes.md
+- paper_ieee/similarity/make_abbrev_bib.py
+- paper_ieee/similarity/match_inventory.md
+- paper_ieee/similarity/rewrite_v2.py
+- paper_ieee/tables/SOURCES.md
+- paper_ieee/tables/table1_baselines.csv
+- paper_ieee/tables/table1_baselines.tex
+- paper_ieee/tables/table2_point.csv
+- paper_ieee/tables/table2_point.tex
+- paper_ieee/tables/table3_conformal.csv
+- paper_ieee/tables/table3_conformal.tex
+- paper_ieee/tables/table4_p3.csv
+- paper_ieee/tables/table4_p3.tex
+- paper_ieee/tables/table4_p3_homoscedastic.csv
+- paper_ieee/tables/table5_p4.csv
+- paper_ieee/tables/table5_p4.tex
+- paper_ieee/tables/values.tex
+- paper_ieee/turnitin_notes.md
+- paper_ieee/v2_apply_edits.py
+- paper_ieee/v2_changes.json
+- paper_ieee/v2_update_plan.md
+- paper_ieee/venue_note.md
+- paper_ieee/venue_research.md
+- results/uq/conformal_sandbox.png
+- results/uq/heteroscedastic_compare.csv
+- results/uq/homoscedastic_trials.csv
+- results/uq/paper_v2/CODE_CHANGES.md
+- results/uq/paper_v2/DIAGNOSIS.md
+- results/uq/paper_v2/PROTOCOL.md
+- results/uq/paper_v2/RESULTS.md
+- results/uq/paper_v2/baselines/NOTES.md
+- results/uq/paper_v2/baselines/american_put_extrapolate.csv
+- results/uq/paper_v2/baselines/american_put_full.csv
+- results/uq/paper_v2/baselines/american_put_noisy.csv
+- results/uq/paper_v2/baselines/beat_pinn_counts.csv
+- results/uq/paper_v2/baselines/check_v1_pinn_row_extrapolate.csv
+- results/uq/paper_v2/baselines/check_v1_pinn_row_full.csv
+- results/uq/paper_v2/baselines/check_v1_pinn_row_noisy.csv
+- results/uq/paper_v2/baselines/extrapolation_comparison.csv
+- results/uq/paper_v2/diagnosis/diag_grid_crr500.csv
+- results/uq/paper_v2/diagnosis/exp_E0_v1_seed0.csv
+- results/uq/paper_v2/diagnosis/exp_E1_amerBC_seed0.csv
+- results/uq/paper_v2/diagnosis/exp_E2_min_seed0.csv
+- results/uq/paper_v2/diagnosis/exp_E2_min_seed1.csv
+- results/uq/paper_v2/diagnosis/exp_E3_min_amerBC_seed0.csv
+- results/uq/paper_v2/diagnosis/exp_E3_min_amerBC_seed1.csv
+- results/uq/paper_v2/diagnosis/exp_E3_min_amerBC_seed2.csv
+- results/uq/paper_v2/diagnosis/exp_E4_prod_wcomp100_seed0.csv
+- results/uq/paper_v2/diagnosis/exp_E5_curriculum_seed0.csv
+- results/uq/paper_v2/diagnosis/exp_E6_prod_wterm10_seed0.csv
+- results/uq/paper_v2/diagnosis/exp_F1_min_amerBC_wc10_seed0.csv
+- results/uq/paper_v2/diagnosis/exp_F1_min_amerBC_wc10_seed1.csv
+- results/uq/paper_v2/diagnosis/exp_F1_min_amerBC_wc10_seed2.csv
+- results/uq/paper_v2/diagnosis/exp_F2_min_amerBC_wc10_wo10_seed0.csv
+- results/uq/paper_v2/diagnosis/exp_F4_min_amerBC_wc100_seed0.csv
+- results/uq/paper_v2/diagnosis/exp_F5_min_amerBC_curriculum_seed0.csv
+- results/uq/paper_v2/diagnosis/experiments_all.csv
+- results/uq/paper_v2/diagnosis/logs/batch1_end.txt
+- results/uq/paper_v2/diagnosis/logs/batch1_start.txt
+- results/uq/paper_v2/diagnosis/logs/batch2_end.txt
+- results/uq/paper_v2/diagnosis/logs/batch2_start.txt
+- results/uq/paper_v2/diagnosis/v1_model_diag.csv
+- results/uq/paper_v2/figures/fig_p1_n1_bucket_coverage_a10.pdf
+- results/uq/paper_v2/figures/fig_p1_n1_bucket_coverage_a10.png
+- results/uq/paper_v2/figures/fig_p1p2_marginal_coverage.csv
+- results/uq/paper_v2/figures/fig_p1p2_marginal_coverage.pdf
+- results/uq/paper_v2/figures/fig_p1p2_marginal_coverage.png
+- results/uq/paper_v2/figures/fig_p2_bucket_coverage_a05.pdf
+- results/uq/paper_v2/figures/fig_p2_bucket_coverage_a05.png
+- results/uq/paper_v2/figures/fig_p2_bucket_coverage_a10.pdf
+- results/uq/paper_v2/figures/fig_p2_bucket_coverage_a10.png
+- results/uq/paper_v2/figures/fig_p2_bucket_width_a05.pdf
+- results/uq/paper_v2/figures/fig_p2_bucket_width_a05.png
+- results/uq/paper_v2/figures/fig_p2_bucket_width_a10.pdf
+- results/uq/paper_v2/figures/fig_p2_bucket_width_a10.png
+- results/uq/paper_v2/figures/fig_p2_interval_slice.csv
+- results/uq/paper_v2/figures/fig_p2_interval_slice_tau050.pdf
+- results/uq/paper_v2/figures/fig_p2_interval_slice_tau050.png
+- results/uq/paper_v2/figures/fig_p2_residual_vs_error.csv
+- results/uq/paper_v2/figures/fig_p2_residual_vs_error.pdf
+- results/uq/paper_v2/figures/fig_p2_residual_vs_error.png
+- results/uq/paper_v2/figures/fig_p3_bucket_coverage_a05.pdf
+- results/uq/paper_v2/figures/fig_p3_bucket_coverage_a05.png
+- results/uq/paper_v2/figures/fig_p3_bucket_coverage_a10.pdf
+- results/uq/paper_v2/figures/fig_p3_bucket_coverage_a10.png
+- results/uq/paper_v2/figures/fig_p4_n2_arbitrage.pdf
+- results/uq/paper_v2/figures/fig_p4_n2_arbitrage.png
+- results/uq/paper_v2/logs/train_end.txt
+- results/uq/paper_v2/logs/train_start.txt
+- results/uq/paper_v2/models/n0_seed0.json
+- results/uq/paper_v2/models/n0_seed0.pt
+- results/uq/paper_v2/models/n0_seed1.json
+- results/uq/paper_v2/models/n0_seed1.pt
+- results/uq/paper_v2/models/n0_seed2.json
+- results/uq/paper_v2/models/n0_seed2.pt
+- results/uq/paper_v2/models/n0_seed3.json
+- results/uq/paper_v2/models/n0_seed3.pt
+- results/uq/paper_v2/models/n0_seed4.json
+- results/uq/paper_v2/models/n0_seed4.pt
+- results/uq/paper_v2/models/n0_seed5.json
+- results/uq/paper_v2/models/n0_seed5.pt
+- results/uq/paper_v2/models/n0_seed6.json
+- results/uq/paper_v2/models/n0_seed6.pt
+- results/uq/paper_v2/models/n0_seed7.json
+- results/uq/paper_v2/models/n0_seed7.pt
+- results/uq/paper_v2/models/n0_seed8.json
+- results/uq/paper_v2/models/n0_seed8.pt
+- results/uq/paper_v2/models/n0_seed9.json
+- results/uq/paper_v2/models/n0_seed9.pt
+- results/uq/paper_v2/models/n1_seed0.json
+- results/uq/paper_v2/models/n1_seed0.pt
+- results/uq/paper_v2/models/n1_seed1.json
+- results/uq/paper_v2/models/n1_seed1.pt
+- results/uq/paper_v2/models/n1_seed2.json
+- results/uq/paper_v2/models/n1_seed2.pt
+- results/uq/paper_v2/models/n1_seed3.json
+- results/uq/paper_v2/models/n1_seed3.pt
+- results/uq/paper_v2/models/n1_seed4.json
+- results/uq/paper_v2/models/n1_seed4.pt
+- results/uq/paper_v2/models/n1_seed5.json
+- results/uq/paper_v2/models/n1_seed5.pt
+- results/uq/paper_v2/models/n1_seed6.json
+- results/uq/paper_v2/models/n1_seed6.pt
+- results/uq/paper_v2/models/n1_seed7.json
+- results/uq/paper_v2/models/n1_seed7.pt
+- results/uq/paper_v2/models/n1_seed8.json
+- results/uq/paper_v2/models/n1_seed8.pt
+- results/uq/paper_v2/models/n1_seed9.json
+- results/uq/paper_v2/models/n1_seed9.pt
+- results/uq/paper_v2/models/n2_seed0.json
+- results/uq/paper_v2/models/n2_seed0.pt
+- results/uq/paper_v2/models/n2_seed1.json
+- results/uq/paper_v2/models/n2_seed1.pt
+- results/uq/paper_v2/models/n2_seed2.json
+- results/uq/paper_v2/models/n2_seed2.pt
+- results/uq/paper_v2/models/n2_seed3.json
+- results/uq/paper_v2/models/n2_seed3.pt
+- results/uq/paper_v2/models/n2_seed4.json
+- results/uq/paper_v2/models/n2_seed4.pt
+- results/uq/paper_v2/models/n2_seed5.json
+- results/uq/paper_v2/models/n2_seed5.pt
+- results/uq/paper_v2/models/n2_seed6.json
+- results/uq/paper_v2/models/n2_seed6.pt
+- results/uq/paper_v2/models/n2_seed7.json
+- results/uq/paper_v2/models/n2_seed7.pt
+- results/uq/paper_v2/models/n2_seed8.json
+- results/uq/paper_v2/models/n2_seed8.pt
+- results/uq/paper_v2/models/n2_seed9.json
+- results/uq/paper_v2/models/n2_seed9.pt
+- results/uq/paper_v2/p1p2/p1p2_coverage_split_spread.csv
+- results/uq/paper_v2/p1p2/p1p2_meta.json
+- results/uq/paper_v2/p1p2/p1p2_model_diagnostics.csv
+- results/uq/paper_v2/p1p2/p1p2_model_diagnostics_summary.csv
+- results/uq/paper_v2/p1p2/p1p2_obstacle_raw.csv
+- results/uq/paper_v2/p1p2/p1p2_obstacle_summary.csv
+- results/uq/paper_v2/p1p2/p1p2_raw.csv
+- results/uq/paper_v2/p1p2/p1p2_signed_error_raw.csv
+- results/uq/paper_v2/p1p2/p1p2_signed_error_summary.csv
+- results/uq/paper_v2/p1p2/p1p2_summary.csv
+- results/uq/paper_v2/p3/p3_meta.json
+- results/uq/paper_v2/p3/p3_raw.csv
+- results/uq/paper_v2/p3/p3_summary.csv
+- results/uq/paper_v2/p4/p4_meta.json
+- results/uq/paper_v2/p4/p4_raw.csv
+- results/uq/paper_v2/p4/p4_summary.csv
+- results/uq/paper_v2/pools/pool_seed0.csv
+- results/uq/paper_v2/pools/pool_seed1.csv
+- results/uq/paper_v2/pools/pool_seed2.csv
+- results/uq/paper_v2/pools/pool_seed3.csv
+- results/uq/paper_v2/pools/pool_seed4.csv
+- results/uq/paper_v2/pools/pool_seed5.csv
+- results/uq/paper_v2/pools/pool_seed6.csv
+- results/uq/paper_v2/pools/pool_seed7.csv
+- results/uq/paper_v2/pools/pool_seed8.csv
+- results/uq/paper_v2/pools/pool_seed9.csv
+- results/uq/paper_v2/pytest_full_suite.txt
+- results/uq/paper_v2/tables_preview/make_tables_v2.py
+- results/uq/paper_v2/tables_preview/table1_baselines.csv
+- results/uq/paper_v2/tables_preview/table1_baselines.tex
+- results/uq/paper_v2/tables_preview/table2_point.csv
+- results/uq/paper_v2/tables_preview/table2_point.tex
+- results/uq/paper_v2/tables_preview/table3_conformal.csv
+- results/uq/paper_v2/tables_preview/table3_conformal.tex
+- results/uq/paper_v2/tables_preview/table4_p3.csv
+- results/uq/paper_v2/tables_preview/table4_p3.tex
+- results/uq/paper_v2/tables_preview/table4_p3_homoscedastic.csv
+- results/uq/paper_v2/tables_preview/table5_p4.csv
+- results/uq/paper_v2/tables_preview/table5_p4.tex
+- results/uq/paper_v2/tables_preview/values.tex
+- results/uq/paper_v2/v1_vs_v2.csv
+- results/uq/pinn_vs_bs.csv
+- results/uq/summary.csv
+- scripts/paper_common.py
+- scripts/paper_figures.py
+- scripts/paper_make_pools.py
+- scripts/paper_models.py
+- scripts/paper_p1p2_conformal.py
+- scripts/paper_p3_synthetic.py
+- scripts/paper_p4_arbitrage.py
+- scripts/paper_signed_error.py
+- scripts/paper_train_pinns.py
+- scripts/run_conformal_sandbox.py
+- scripts/v2_baseline_counts.py
+- scripts/v2_baseline_pinn_row.py
+- scripts/v2_compare.py
+- scripts/v2_diag_experiment.py
+- scripts/v2_diag_v1models.py
+- scripts/v2_obstacle_slack.py
+- src/ivuq/uq/__init__.py
+- src/ivuq/uq/adapters.py
+- src/ivuq/uq/conformal.py
+- src/ivuq/uq/protocol.py
+- tests/test_pinn_american_lcp_form.py
+- tests/test_uq_conformal.py
+- tests/test_uq_protocol.py
+- uv.lock
+
+## Left out on purpose
+- .venv, caches, LaTeX build by-products, *.orig backups
+- data/dolthub/slices and aux (49 MB DoltHub extract, CC BY-SA 4.0; regenerate with qc_slice.py)
+- planning/, review2/, paper/ (already in .gitignore)

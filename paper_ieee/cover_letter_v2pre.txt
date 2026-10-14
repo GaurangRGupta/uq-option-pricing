@@ -1,0 +1,41 @@
+To: The Program Chairs, IEEE ICRCICN 2027
+Kalyani Government Engineering College, Kalyani, West Bengal, India
+
+Subject: Submission of full paper, "Conformal Uncertainty Quantification for
+Physics-Informed American Option Pricing: The Difficulty Score Must Respect
+Complementarity"
+
+Dear Program Chairs,
+
+We submit the above paper for consideration at the 2027 Eighth IEEE
+International Conference on Research in Computational Intelligence and
+Communication Networks (ICRCICN 2027).
+
+The paper studies distribution-free uncertainty bands for neural option
+pricers. We train physics-informed neural networks for European and American
+puts with no labelled prices and wrap them in split, residual-normalised and
+Mondrian conformal prediction. Over ten training seeds, split conformal
+reaches its nominal coverage for every model, including a biased American
+network. The main finding is methodological: the raw PDE residual is a poor
+difficulty score for the American put, while the complementarity residual of
+the free-boundary problem tracks the error and gives narrower bands at equal
+coverage. We also compare ten labelled regressors and report static-arbitrage
+checks of prices and band edges. All labels are synthetic, and the paper
+states this and its other limits plainly.
+
+The work fits the computational intelligence scope of the conference. The
+manuscript is original, has not been published, and is not under review
+elsewhere. All authors have approved the submission. The paper follows the
+IEEE two-column format and is within the 6-page limit. Use of an AI
+assistant is disclosed in the Acknowledgment, as the conference requires.
+
+Corresponding author: Gaurang Gupta, [GAURANG_EMAIL]
+Co-authors: Arush Gupta, [ARUSH_EMAIL]; Utkarsh Nigam, [UTKARSH_EMAIL]
+Affiliation: Mukesh Patel School of Technology Management and Engineering
+(MPSTME), SVKM's NMIMS (Deemed-to-be University), Vile Parle (W),
+Mumbai 400056, India
+
+Thank you for your consideration.
+
+Sincerely,
+Gaurang Gupta, Arush Gupta, Utkarsh Nigam

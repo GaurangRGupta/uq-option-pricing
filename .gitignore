@@ -18,5 +18,8 @@ planning/
 # Paper/writeup notes — kept locally, not pushed to GitHub.
 paper/
 
+# Review 2 presentation pack (slides, reports, local results).
+review2/
+
 # Old scratch extraction file, unrelated to the project.
 paper4_extracted.txt
