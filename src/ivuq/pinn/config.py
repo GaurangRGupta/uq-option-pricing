@@ -196,6 +196,21 @@ class AmericanPINNConfig:
     curriculum_ramp_epochs: int = 1500
     curriculum_start_frac: float = 0.1
 
+    # v2 (results/uq/paper_v2/DIAGNOSIS.md). Both default to the v1 behaviour,
+    # so the v1 models and every existing test are unchanged.
+    # lcp_form: how the complementarity condition L[u](u-h)=0 is penalised.
+    #   "product" (v1): complementarity_violation = L[u] * (u - h). Weak where
+    #       u - h is small, so a supersolution with L[u] > 0 in the continuation
+    #       region costs almost nothing (the v1 N2 upward bias).
+    #   "min": complementarity_violation = min(L[u], u - h), the standard
+    #       min-form of the LCP. It is zero iff the LCP holds and penalises
+    #       L[u] > 0 at full strength wherever u is above the obstacle.
+    lcp_form: str = "product"
+    # american_low_boundary: put value imposed at m = 0. False (v1) uses the
+    # European value exp(-r tau); True uses the American value 1 (immediate
+    # exercise of a put at S = 0 pays K), consistent with u >= h.
+    american_low_boundary: bool = False
+
     lr: float = 2e-3
     lr_decay_every: int = 2000  # halve lr every this many epochs, 0 disables
     epochs: int = 6000
@@ -204,6 +219,8 @@ class AmericanPINNConfig:
     def __post_init__(self) -> None:
         if self.option_type not in ("call", "put"):
             raise ValueError(f"option_type must be 'call' or 'put', got {self.option_type!r}")
+        if self.lcp_form not in ("product", "min"):
+            raise ValueError(f"lcp_form must be 'product' or 'min', got {self.lcp_form!r}")
         if self.weighting_scheme not in ("fixed", "curriculum", "self_adaptive"):
             raise ValueError(
                 "weighting_scheme must be 'fixed', 'curriculum', or 'self_adaptive', "

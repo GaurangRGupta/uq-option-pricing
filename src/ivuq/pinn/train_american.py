@@ -63,6 +63,8 @@ def _terminal_boundary_losses(
     u_low_pred = model(torch.cat([m_low, tau_bnd], dim=1))
     u_high_pred = model(torch.cat([m_high, tau_bnd], dim=1))
     u_low_true = boundary_low(tau_bnd, config.r, config.option_type)
+    if config.american_low_boundary and config.option_type == "put":
+        u_low_true = torch.ones_like(tau_bnd)  # American put at S=0: exercise now, worth K
     u_high_true = boundary_high(tau_bnd, config.m_max, config.r, config.q, config.option_type)
     loss_boundary = torch.mean((u_low_pred - u_low_true) ** 2) + torch.mean((u_high_pred - u_high_true) ** 2)
     return loss_terminal, loss_boundary
@@ -118,7 +120,8 @@ def train_american_pinn(config: AmericanPINNConfig) -> tuple[PINN, dict[str, lis
             m_int, tau_int = sample_interior(config.n_interior, config.m_max, config.tau_max)
 
         ineq_v, obstacle_v, complementarity_v = free_boundary_residuals(
-            model, m_int, tau_int, config.r, config.q, config.sigma, config.option_type
+            model, m_int, tau_int, config.r, config.q, config.sigma, config.option_type,
+            lcp_form=config.lcp_form,
         )
 
         if config.weighting_scheme == "self_adaptive":

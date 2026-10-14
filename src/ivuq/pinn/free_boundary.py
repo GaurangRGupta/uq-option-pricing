@@ -62,6 +62,7 @@ def free_boundary_residuals(
     q: float,
     sigma: float,
     option_type: str,
+    lcp_form: str = "product",
 ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
     """The three (unreduced, per-point) terms of the LCP penalty (3) above.
 
@@ -76,6 +77,10 @@ def free_boundary_residuals(
 
     ineq_violation = torch.relu(-l_u)
     obstacle_violation = torch.relu(h - u)
-    complementarity_violation = l_u * (u - h)
+    if lcp_form == "min":
+        # min-form LCP residual: zero iff L[u] >= 0, u >= h and one of them binds.
+        complementarity_violation = torch.minimum(l_u, u - h)
+    else:
+        complementarity_violation = l_u * (u - h)
 
     return ineq_violation, obstacle_violation, complementarity_violation
