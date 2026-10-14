@@ -1,0 +1,35 @@
+{
+  "model": "n0",
+  "seed": 2,
+  "threads": 1,
+  "wall_seconds": 154.03882981700008,
+  "config": {
+    "option_type": "put",
+    "r": 0.03,
+    "q": 0.0,
+    "sigma": 0.2,
+    "m_max": 3.0,
+    "tau_max": 1.0,
+    "hidden_layers": 4,
+    "hidden_width": 64,
+    "n_interior": 3000,
+    "n_terminal": 400,
+    "n_boundary": 200,
+    "lambda_pde": 0.0,
+    "lambda_terminal": 3.0,
+    "lambda_boundary": 1.0,
+    "lr": 0.002,
+    "lr_decay_every": 2000,
+    "epochs": 6000,
+    "seed": 2
+  },
+  "final_losses": {
+    "total": 6.0664584452752024e-05,
+    "pde": 0.0026576374657452106,
+    "terminal": 1.691464967734646e-05,
+    "boundary": 9.92063905869145e-06
+  },
+  "torch": "2.14.1+cpu",
+  "host": "grok-bot-vm-446165250",
+  "pid": 338000
+}

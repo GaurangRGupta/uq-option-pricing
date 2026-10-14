@@ -1,0 +1,9 @@
+tests/test_tradier_loader.py::test_get_option_chain_matches_schema
+  /workspace/ivuq/src/ivuq/data/sources/tradier.py:127: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "downloaded_at_utc": datetime.utcnow().isoformat(),
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+121 passed, 1 warning in 264.21s (0:04:24)
+[after adding tests/test_pinn_american_lcp_form.py] 11 passed in 45.75s
+[full suite rerun incl. new test, 02:00:09-02:04:19 IST] 124 passed, 1 warning in 249.25s (0:04:09)
+[final files, line endings restored, 02:07:23 IST] american+european PINN tests: 15 passed in 79.75s (0:01:19)

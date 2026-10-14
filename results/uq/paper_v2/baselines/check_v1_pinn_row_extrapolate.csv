@@ -1,0 +1,2 @@
+regime,style,option_type,label_noise,model,family,n_train,seed,fit_seconds,mae_usd,rmse_usd,max_usd,mae_inside_usd,mae_outside_usd,delta_mae,gamma_mae,pde_rms,boundary_mae_usd,boundary_missing,iv_mae_pts,iv_failed,viol_convex,viol_delta,viol_bound,viol_calendar
+extrapolate,american,put,0.0,pinn_n2,pinn,0,0,151.9571564609996,2.312943738819842,2.6313352623836694,5.463281869888304,0.7795590140842934,2.54884908108685,,,,21.25,0.7777777777777778,7.9702975072815745,0.0,0.28888888888888886,0.1688888888888889,0.0044444444444444444,0.0
