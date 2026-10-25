@@ -23,3 +23,13 @@ review2/
 
 # Old scratch extraction file, unrelated to the project.
 paper4_extracted.txt
+
+# DoltHub pulls (CC BY-SA 4.0, large): re-create with scripts/pull_dolthub.py
+data/dolthub/slices/
+
+# Heston study outputs that are large and regenerable
+results/heston_trading/signals_*_h_full.csv
+results/heston_trading/trades_*.csv
+
+# Live Yahoo snapshots and forward-test ledger (market data, regenerable)
+data/live/
