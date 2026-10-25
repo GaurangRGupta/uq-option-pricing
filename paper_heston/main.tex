@@ -1,0 +1,126 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,booktabs,graphicx,url,hyperref,microtype}
+\input{numbers}
+
+\title{Heston American-put PINNs as a trading theo:\\
+conformal bands, a hedged backtest, and no edge on end-of-day data}
+\author{Draft for internal review}
+\date{October 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We build a physics-informed neural network (PINN) for the American put under the Heston stochastic-variance model, with the five model parameters as network inputs so that one trained network prices every parameter set a daily calibration visits. A control variate and a small set of exact-solver labels bring the network to about five cents per \$100 of strike against a finite-difference reference. We use the network the way a desk uses a theo: calibrate it each day to the quoted chain, compare the market with the theo, and trade only when the gap exceeds a past-only conformal band with an adaptive miscoverage level. The test bed is \nQuotes{} American put quotes on SPY, AAPL and NVDA over \nDates{} trading days, a delta-hedged take-the-quote backtest with spread, commission and hedging costs, and a test period whose rule settings were frozen beforehand. The band does what it promises: realised miss rates are within a point of the target. Trading on it is a different matter. Filled at the close the theo was fitted on, the Heston theos and a crude Black--Scholes theo both beat random signals by a wide margin; filled at the next close, every theo loses money. The profit at the same close therefore comes from end-of-day quote dislocations that vanish within a day, and does not show that Heston dynamics are a better model of these options. We report this as a null result and document the limits of fitting Heston without jumps to short-dated quotes.
+\end{abstract}
+
+\section{Introduction}
+A trading desk values an option against a model, the theo, and acts on the difference between market price and theo. Two things decide whether that works: how well the theo describes the prices the market is actually quoting, and whether a given difference is large enough to be real rather than noise. This paper builds both ingredients and tests them on real American option quotes.
+
+The pricing model is Heston~\cite{heston1993closed}: variance follows its own mean-reverting square-root process, correlated with the underlying, which gives a skew and a term structure that Black--Scholes~\cite{black1973pricing} with one volatility cannot. The American put has no closed form under Heston, so every price is a numerical solution of a free-boundary problem. A calibration to a day of quotes needs that price at hundreds of parameter sets, and again every day. We therefore train a PINN~\cite{raissi2019physics} whose inputs include the Heston parameters, so one network serves the whole calibration and is differentiable in the parameters. The coupled solution-and-boundary construction follows the idea of Rohan et al.~\cite{rohan2026coupled}; the code is our own.
+
+The question the numbers should answer is not whether a neural network can match a finite-difference solver, which it can to a few cents, but whether the resulting theo carries a tradable signal once the market's own spreads and hedging costs are paid. We compare against three controls. The first is an exact finite-difference theo, so that the cost of the network approximation is measured directly. The second and third are Black--Scholes theos with a flat and a fitted-smile volatility. They are comparison rows only. The conformal band~\cite{vovk2005algorithmic,bostrom2020mondrian,gibbs2021adaptive} is the decision rule that separates a real gap from noise.
+
+\paragraph{Contributions.}
+(i) A parameter-conditioned Heston American-put PINN in two forms, a single network with a Black--Scholes control variate and a coupled solution and exercise-boundary pair, with the effect of exact-solver anchoring measured. (ii) A Craig--Sneyd finite-difference solver, validated, used as the reference and as a control theo. (iii) A walk-forward daily calibration, a past-only Mondrian conformal band with adaptive level, and a hedged backtest with a frozen-settings out-of-sample test and random-signal controls. (iv) An honest negative result and a diagnosis of where the same-close profit comes from.
+
+\section{Model and exact solver}
+Let $S$ be the underlying, $v$ its instantaneous variance, $K$ the strike, $\tau=T-t$ time to expiry, $m=S/K$ and $u=V/K$ the price per unit strike. Under the risk-neutral measure with rate $r$ and dividend yield $q$,
+\begin{align}
+dS &= (r-q)S\,dt+\sqrt{v}\,S\,dW^{S}, &
+dv &= \kappa(\theta-v)\,dt+\xi\sqrt{v}\,dW^{v}, & d\langle W^S,W^v\rangle &= \rho\,dt.
+\end{align}
+The Heston operator on $u(m,v,\tau)$ is
+\begin{equation}
+R[u]=u_\tau-\tfrac12 v m^2u_{mm}-\rho\xi v\,m\,u_{mv}-\tfrac12\xi^2 v\,u_{vv}-(r-q)\,m\,u_m-\kappa(\theta-v)u_v+ru .
+\label{eq:op}
+\end{equation}
+The American put is the linear complementarity problem with payoff $h(m)=\max(1-m,0)$,
+\begin{equation}
+\min\bigl(R[u],\,u-h\bigr)=0,\qquad u(m,v,0)=h(m).
+\label{eq:lcp}
+\end{equation}
+\paragraph{Finite-difference reference.}
+In $x=\ln m$ the problem is solved with the Craig--Sneyd alternating-direction implicit scheme~\cite{craig1988adi,inthout2010adi} with the mixed derivative explicit, and the first steps fully implicit to damp the oscillation the payoff kink would otherwise send through the second-order scheme~\cite{rannacher1984finite}. Early exercise is imposed by projection $u\leftarrow\max(u,h)$ after each unconstrained step. The grid is uniform in $x$ with a node on the kink and stretched near $v=0$. One run returns the surface for all $\tau$ up to the largest expiry, so a day's chain is priced from a single solve per distinct $(r,q)$.
+
+\paragraph{Validation.}
+Against the semi-analytic European price~\cite{albrecher2007little} at \fdEuN{} random parameter sets, the mean absolute error is \fdEuMae{} cents per \$100 of strike (95th percentile \fdEuP95{}, maximum \fdEuMax{}). The American price is at least the Longstaff--Schwartz~\cite{longstaff2001valuing} price in every test by between zero and 2.7 cents, as it should be for a regression lower bound, and with $\xi\to0$ the early-exercise premium agrees with a Cox--Ross--Rubinstein tree~\cite{cox1979option} to under a cent. The reference is therefore accurate well inside the quoted spreads we trade against.
+
+\section{Parameter-conditioned PINNs}
+\subsection{Single conditioned network with a control variate}
+The network takes $(m,v,\tau,\kappa,\theta,\xi,\rho,r,q)$ and is trained on the residual of~\eqref{eq:lcp} in its min form, the terminal payoff, the two Dirichlet edges in $m$, and $u_{vv}=0$ at the largest variance, with all points and all parameters redrawn every epoch. Learning the full surface, including the kink, in nine dimensions is slow, so the network represents only a correction to a known price,
+\begin{equation}
+u(m,v,\tau,p)=\mathrm{BS}\bigl(m,\sigma^2{=}v,\tau;r,q\bigr)+\frac{\tau}{\tau_{\max}}\,N(m,v,\tau,p),
+\label{eq:cv}
+\end{equation}
+where BS is the European Black--Scholes put at variance $v$. The factor $\tau$ makes the terminal condition hold exactly, and $N$ only has to carry the difference between Heston and constant variance and the early-exercise premium. The PDE residual is taken on $u$ in~\eqref{eq:cv} by automatic differentiation.
+
+\subsection{Coupled solution and boundary networks}
+A second construction follows the idea of~\cite{rohan2026coupled}. The solution network $u$ is trained only in the continuation region $m>b(v,\tau,p)$, where it satisfies the PDE $R[u]=0$ with no inequality; a boundary network $b\in(0,1)$ is tied to it by value matching $u(b)=1-b$, smooth pasting $u_m(b)=-1$ and $b(v,0,p)=1$. The price is $u$ for $m\ge b$ and $1-m$ below. Because the solution network never faces an inequality, the upward bias that the min-form loss produces is absent.
+
+\subsection{Anchoring}
+Pure physics training did not reach the accuracy the calibration needs: the plain network was off by \$0.67 per \$100 of strike on SPY, and the control variate alone by \$0.24. We add a mean-square term against exact-solver labels, $w\,\mathbb E[(u-u_{\mathrm{FD}})^2]$, and for the coupled pair a term against the solver's exercise boundary. A network trained this way is \emph{anchored} and is reported as such throughout; the physics-only rows are the ablation. Table~\ref{tab:accuracy} shows the effect of the weight. Accuracy is measured against fresh exact solves at random parameter sets that the networks never saw.
+\input{tables/accuracy}
+The best single network reaches about five cents on SPY, AAPL and NVDA, and the coupled pair is comparable, slightly better on SPY and NVDA. This is in the range reported in~\cite{rohan2026coupled}. It is not a substitute for the exact solver: the spreads on SPY puts are \$0.07 to \$0.20 on a strike near \$700, finer than the network error, which is why we keep the exact-solver theo as a control.
+
+\section{Data and daily calibration}
+\paragraph{Data.}
+Daily put quotes for SPY, AAPL and NVDA from the DoltHub options repository~\cite{dolthub2025options}, \firstDate{} to \lastDate{}, filtered to positive two-sided quotes with $10\le$ DTE $\le 66$ and $0.80\le K/S\le1.25$: \nQuotes{} quotes (SPY \nSPY{}, AAPL \nAAPL{}, NVDA \nNVDA{}). The median relative spread is \sprSPY\% for SPY, \sprNVDA\% for NVDA and \sprAAPL\% for AAPL. SPY options are American; the repository has no SPX, which is European. Rates come from the Treasury curve and dividend yields from trailing dividends. Raw quotes are not redistributed (licence and size); the scripts rebuild them.
+
+\paragraph{Calibration.}
+On each date $(\kappa,\theta,\xi,\rho,v_0)$ minimise
+\begin{equation}
+\sum_i \varrho\!\left(\frac{P_i(p)-\mathrm{mid}_i}{c_i}\right)+\lambda\bigl\|(p-p_{\mathrm{prev}})/w\bigr\|^2,\qquad c_i=\max\bigl(s_i,\;0.003\,\mathrm{vega}_i\bigr),
+\label{eq:calib}
+\end{equation}
+with $s_i$ the half spread, $\varrho$ the soft-$\ell_1$ loss so that the few mispriced quotes the strategy later trades do not drag the fit, and a Tikhonov pull toward the previous day's parameters. Parameters live in a box matched to each underlying. A date uses only quotes from itself and earlier dates. The PINN calibrates in about two seconds a day; the exact solver in about forty-five.
+
+\paragraph{Limits of the fit.}
+Heston without jumps fits short-dated equity puts poorly. Table~\ref{tab:edge} shows that the exact-solver calibration drives $\kappa$ to its upper bound on most days and $\xi$ to its upper bound on a large share, even in a box widened for this purpose; the PINN calibration, run on the narrower box it was trained on, pins $\xi$ and $\rho$ often. The median residual is between one and a half and four half spreads, depending on pricer and symbol. This is a property of the model class on this data and not of the solver.
+\input{tables/edge}
+\input{tables/fit}
+Table~\ref{tab:fit} puts the fits in context. The exact-solver Heston theo is within the half spread for about half the quotes. The single PINN and coupled PINN theos are worse than the exact solver, the cost of approximating the solver inside a calibration. A Black--Scholes volatility smile fitted per expiry, with about twelve numbers per day, fits better than five-parameter Heston in sample; that is expected, and the trading test below is the fair comparison, because both are fitted to the same day's quotes and traded the same way.
+
+\section{Conformal band and trading rule}
+\paragraph{Band.}
+For quote $i$ on date $t$ the nonconformity score is $s_i=|\mathrm{mid}_i-\mathrm{theo}_i|/c_i$. The calibration set is the scores of the previous 20 trading days of the same underlying, split into Mondrian buckets of moneyness (three classes) and tenor (two classes)~\cite{bostrom2020mondrian}. The half width is $h_i=Q_b(1-\alpha_t)\,c_i$ with the finite-sample quantile~\cite{vovk2005algorithmic,lei2018distribution}. Daily scores are not exchangeable, so the level is adapted after each date with the realised miss rate $\mathrm{err}_t$,
+\begin{equation}
+\alpha_{t+1}=\mathrm{clip}\bigl(\alpha_t+\gamma(\alpha-\mathrm{err}_t),\,0.01,\,0.50\bigr),
+\label{eq:aci}
+\end{equation}
+as in adaptive conformal inference~\cite{gibbs2021adaptive}; $\gamma=0$ is the fixed-level rule. Everything uses information up to the close of date $t$.
+\input{tables/coverage}
+Table~\ref{tab:coverage} reports the realised miss rate against the 10\% target. The band holds its coverage for every theo: 10.4\% to 11.1\% overall with the fixed level, and within a fifth of a point of target with the adaptive level. By symbol the fixed level ranges up to 11.8\% and its worst moneyness-tenor bucket reaches 13.0\%; the adaptive level stays between 9.6\% and 10.3\% by symbol and between 9.1\% and 11.4\% by bucket. As a statement about how far the market sits from the theo, the band is calibrated.
+
+\paragraph{Rule and fills.}
+Buy when $\mathrm{theo}-\mathrm{ask}>h_i$, sell when $\mathrm{bid}-\mathrm{theo}>h_i$, so the whole spread-crossing edge has to clear the band. At most ten trades a day per underlying, ranked by the excess over the band. There is no intraday book in end-of-day data, so fills are at the stamped quote, buy at the ask and sell at the bid, and no market-making fills are simulated. Entry is at the signal close (lag 0, optimistic) or the next close (lag 1). Positions are held for one, three or five trading days and closed at the opposite side of that day's quote. Each is delta hedged with the underlying using the vendor delta, with dividends on ex-dates, a commission of \$0.65 per contract per side and one basis point on every share traded.
+
+\paragraph{Controls and the out-of-sample test.}
+Random-signal controls draw the same number of trades per day on random contracts and sides, 30 seeds. For the out-of-sample test the quantile level, the adaptive step and the holding period are chosen by Sharpe ratio on the dates before 2026-05-01 (at least 100 trades), frozen, and scored on the later dates with a block-bootstrap interval. The theos and bands are walk-forward by construction.
+
+\section{Results}
+\input{tables/insample}
+\paragraph{In sample.}
+Table~\ref{tab:insample} compares the band rule with trading every quote that clears the spread and with random trades. With fills at the same close, the band rule earns a positive amount per trade for the single PINN, the coupled PINN and Black--Scholes flat volatility, and a negative amount for the exact-solver Heston theo. Random signals lose heavily. Without the band, every Heston theo loses and Black--Scholes flat volatility only breaks even. So the band selects better trades than trading every quote that clears the spread, and than chance, but a good selection is not yet a profit for every theo. With fills at the next close every theo, every rule and every holding period loses money. Random signals also lose, which shows the size of the cost that has to be overcome.
+
+\input{tables/oos}
+\paragraph{Out of sample.}
+Table~\ref{tab:oos} is the frozen-settings test. At the same close the single PINN and coupled PINN make the largest totals and Sharpe ratios, Black--Scholes flat volatility is close behind, and the exact-solver Heston theo, the best fit to the quotes, makes the least on a smaller number of trades. At the next close all of them lose in point terms; the bootstrap interval for the mean daily P\&L is entirely negative for every theo except the single PINN, whose interval just reaches zero. At the same close the intervals exclude zero for the single PINN, the coupled PINN and both Black--Scholes theos, and include zero for the exact-solver Heston theo. Ranking the networks above the solver does not mean the networks are better models. The exact solver fits the quotes more tightly (Table~\ref{tab:fit}), so it gives the band less room and leaves fewer trades, while the network error adds a roughness that happens to put more trades where the end-of-day quote is out of line. The same-close differences among the three Heston theos are small relative to the sampling error of a test with a few hundred trades and should not be over-read.
+
+\input{tables/decomp}
+\paragraph{Where the same-close profit comes from.}
+Table~\ref{tab:decomp} breaks the test trades down by underlying. The same-close profit is about one dollar per share, roughly the edge at entry after crossing the spread, and it is earned mostly on AAPL and NVDA, the names with the wide spreads, with very few SPY trades. The market quote returns to the theo within a day. An entry at the next close finds the gap already closed and pays the spread to enter, which is the loss in the lag~1 rows. The crude Black--Scholes flat theo earns the same kind of profit at lag~0, so it does not depend on a better model of volatility dynamics. The pattern is that of a short-lived dislocation in end-of-day quotes, stale or wide at the close, which a single-snapshot theo spots and which has gone by the next close. Exploiting it needs an intraday quote and an intraday fill; the data here cannot show that it would survive that.
+
+\section{Limitations}
+(i) The data are end-of-day. Same-close fills are not executable; the lag~1 rows are the honest test and they are negative. (ii) One year, three underlyings, a test period of a few months with a few hundred trades; the bootstrap intervals in Table~ef{tab:oos} are wide. (iii) Heston without jumps does not fit short-dated puts: parameters sit on the box edges and the residual is several half spreads. A jump component, or a richer variance model, may change this and is untested here. (iv) The networks are anchored to exact-solver labels; they are an accelerated surrogate of the solver and not an independent physics solution. (v) The exact-solver slow-parameter mode was not run, and the single network's slow mode is in the study tables only. (vi) The five new bibliography entries have not been verified against the publishers.
+
+\section{Conclusion}
+A conditioned Heston PINN, anchored to an exact solver, is accurate to about five cents per \$100 of strike and calibrates a daily chain in seconds. A past-only adaptive conformal band around the theo holds its stated coverage. As a trading signal on end-of-day American put quotes the combination shows no edge that survives a one-day delay, and the same-close profit is matched by a Black--Scholes theo. The useful finding is the negative one: the speed-up of the PINN is real and the calibration works, but on this data the Heston theo does not find mispricing that the market leaves in place.
+
+\paragraph{Reproducibility.}
+Code is the \texttt{ivuq} package: \texttt{pricing/heston\_fd.py}, \texttt{pinn/heston\_cond.py}, \texttt{pinn/heston\_cond\_coupled.py}, \texttt{calibration/heston\_calib.py} and \texttt{trading/}. The scripts \texttt{pull\_dolthub.py}, \texttt{train\_heston\_cond.py}, \texttt{run\_heston\_theo.py}, \texttt{run\_heston\_study.py} and \texttt{run\_oos\_test.py} regenerate every table through \texttt{paper\_heston/make\_tables.py}.
+
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

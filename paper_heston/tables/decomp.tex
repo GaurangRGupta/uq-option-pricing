@@ -1,0 +1,30 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Out-of-sample trades by underlying. Edge at entry is per share after crossing the spread; the other columns are dollars per contract.}
+\label{tab:decomp}
+\begin{tabular}{lllrrrrr}
+\toprule
+Theo & Fill & Symbol & Trades & Edge at entry & Option & Hedge & Net per trade \\
+\midrule
+Heston single PINN & same & SPY & 23 & 2.51 & 182 & $-$123 & 51 \\
+Heston single PINN & same & AAPL & 84 & 1.68 & 145 & 3 & 143 \\
+Heston single PINN & same & NVDA & 116 & 1.27 & 116 & $-$29 & 83 \\
+Heston single PINN & next & SPY & 8 & 3.00 & $-$207 & 221 & 4 \\
+Heston single PINN & next & AAPL & 82 & 0.93 & 42 & $-$89 & $-$52 \\
+Heston single PINN & next & NVDA & 98 & 0.57 & $-$70 & 40 & $-$33 \\
+Heston coupled PINN & same & SPY & 28 & 2.36 & 195 & $-$108 & 79 \\
+Heston coupled PINN & same & AAPL & 97 & 1.53 & 125 & $-$10 & 110 \\
+Heston coupled PINN & same & NVDA & 118 & 1.23 & 115 & $-$17 & 95 \\
+Heston coupled PINN & next & SPY & 4 & 5.60 & 339 & $-$602 & $-$278 \\
+Heston coupled PINN & next & AAPL & 86 & 1.66 & $-$92 & $-$43 & $-$140 \\
+Heston coupled PINN & next & NVDA & 128 & 1.01 & 4 & $-$46 & $-$46 \\
+BS flat vol & same & SPY & 22 & 2.19 & 51 & $-$34 & 12 \\
+BS flat vol & same & AAPL & 75 & 1.57 & 109 & $-$15 & 90 \\
+BS flat vol & same & NVDA & 120 & 0.91 & 76 & $-$16 & 57 \\
+BS flat vol & next & SPY & 1 & 2.40 & 9 & 20 & 25 \\
+BS flat vol & next & AAPL & 73 & 0.86 & $-$42 & $-$7 & $-$53 \\
+BS flat vol & next & NVDA & 60 & 0.84 & $-$122 & $-$8 & $-$133 \\
+\bottomrule
+\end{tabular}
+\end{table}

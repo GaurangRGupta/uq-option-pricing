@@ -1,0 +1,18 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Share of daily calibrations with a parameter on the edge of its box, and the median fit residual in units of the quote error scale (a value of 1 means residuals the size of the half spread).}
+\label{tab:edge}
+\begin{tabular}{llrrrr}
+\toprule
+Pricer & Symbol & $\kappa$ at upper bound & $\xi$ at upper bound & $\rho$ at lower bound & Median fit RMS \\
+\midrule
+Heston single PINN & SPY & 13\% & 15\% & 18\% & 4.27 \\
+Heston single PINN & AAPL & 25\% & 40\% & 23\% & 2.15 \\
+Heston single PINN & NVDA & 11\% & 54\% & 43\% & 3.92 \\
+Heston exact solver & SPY & 65\% & 53\% & 0\% & 2.41 \\
+Heston exact solver & AAPL & 74\% & 35\% & 0\% & 1.35 \\
+Heston exact solver & NVDA & 64\% & 71\% & 1\% & 2.90 \\
+\bottomrule
+\end{tabular}
+\end{table}

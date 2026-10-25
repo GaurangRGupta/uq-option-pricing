@@ -1,0 +1,24 @@
+\begin{table}[t]
+\centering
+\small
+\caption{In-sample backtest, hold for three trading days, conformal band at $\alpha=10\%$. Net P\&L in dollars after the spread, commissions and hedging cost. \emph{No band} trades every quote that clears the spread; \emph{Random} averages 30 random-signal runs with the trade counts of the band rule.}
+\label{tab:insample}
+\begin{tabular}{llrrrrrr}
+\toprule
+Theo & Fill & Trades & Per trade & Net P\&L & Sharpe & No band & Random \\
+\midrule
+Heston single PINN & same & 631 & 15.5 & 9,752 & 2.13 & $-$10,798 & $-$55,884 \\
+Heston single PINN & next & 352 & $-$42.2 & $-$14,842 & $-$4.20 & $-$27,145 & $-$29,605 \\
+Heston coupled PINN & same & 624 & 18.2 & 11,372 & 2.72 & $-$14,052 & $-$57,572 \\
+Heston coupled PINN & next & 356 & $-$45.9 & $-$16,332 & $-$5.48 & $-$29,974 & $-$27,304 \\
+Heston exact solver & same & 404 & $-$7.6 & $-$3,052 & $-$1.33 & $-$22,477 & $-$49,472 \\
+Heston exact solver & next & 219 & $-$28.2 & $-$6,181 & $-$5.28 & $-$15,378 & $-$25,350 \\
+Heston single PINN, slow & same & 654 & 11.7 & 7,658 & 1.46 & $-$7,677 & $-$57,388 \\
+Heston single PINN, slow & next & 387 & $-$48.1 & $-$18,622 & $-$5.14 & $-$26,401 & $-$29,649 \\
+BS flat vol & same & 663 & 11.4 & 7,584 & 1.75 & 1,164 & $-$57,903 \\
+BS flat vol & next & 354 & $-$47.3 & $-$16,730 & $-$5.70 & $-$3,115 & $-$31,462 \\
+BS smile & same & 154 & 1.4 & 213 & 0.18 & $-$19,149 & $-$17,704 \\
+BS smile & next & 73 & $-$55.6 & $-$4,059 & $-$10.10 & $-$19,903 & $-$7,893 \\
+\bottomrule
+\end{tabular}
+\end{table}

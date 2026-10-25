@@ -1,0 +1,24 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Out-of-sample test. The band level and holding period were chosen on the development dates by Sharpe ratio and frozen; the table is the test period only. The interval is a block bootstrap over days.}
+\label{tab:oos}
+\begin{tabular}{llrrrrrcr}
+\toprule
+Theo & Fill & $\alpha$/hold & Trades & Per trade & Net P\&L & Sharpe & 95\% CI, mean daily P\&L & Random \\
+\midrule
+Heston single PINN & same & 0.05/1 & 223 & 102.4 & 22,843 & 7.16 & [168, 670] & $-$19,964 \\
+Heston single PINN & next & 0.20/3 & 188 & $-$39.6 & $-$7,453 & $-$4.44 & [$-$234, 10] & $-$22,105 \\
+Heston coupled PINN & same & 0.05/1 & 243 & 99.2 & 24,114 & 7.27 & [178, 665] & $-$25,714 \\
+Heston coupled PINN & next & 0.10/1 & 218 & $-$87.0 & $-$18,974 & $-$7.73 & [$-$495, $-$217] & $-$22,348 \\
+Heston exact solver & same & 0.05/3 & 64 & 14.1 & 900 & 0.93 & [$-$95, 150] & $-$9,890 \\
+Heston exact solver & next & 0.20/5 & 149 & $-$66.1 & $-$9,850 & $-$7.24 & [$-$467, $-$146] & $-$17,527 \\
+Heston single PINN, slow & same & 0.05/1 & 254 & 81.6 & 20,716 & 6.20 & [138, 628] & $-$22,653 \\
+Heston single PINN, slow & next & 0.10/1 & 224 & $-$82.7 & $-$18,530 & $-$8.95 & [$-$512, $-$185] & $-$23,127 \\
+BS flat vol & same & 0.05/1 & 217 & 64.0 & 13,891 & 6.51 & [124, 358] & $-$21,240 \\
+BS flat vol & next & 0.20/5 & 134 & $-$88.2 & $-$11,824 & $-$4.58 & [$-$411, $-$67] & $-$22,614 \\
+BS smile & same & 0.05/1 & 106 & 41.0 & 4,347 & 3.76 & [35, 304] & $-$13,290 \\
+BS smile & next & 0.20/1 & 109 & $-$121.9 & $-$13,283 & $-$9.61 & [$-$650, $-$254] & $-$13,474 \\
+\bottomrule
+\end{tabular}
+\end{table}
