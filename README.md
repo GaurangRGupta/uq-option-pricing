@@ -64,8 +64,33 @@ projects don't do:
 - A comparison tool that checks our three pricing methods against each other
   on real data we pulled
 
-**Tests:** 59 automated tests, all passing, so we can keep changing things
+**Tests:** 142 automated tests, all passing, so we can keep changing things
 without accidentally breaking what already works.
+
+## Heston American-put theo and a hedged backtest (October 2026)
+
+A neural network that prices American puts under the Heston stochastic-variance
+model for any parameter set, used the way a trading desk uses a theo: fit it to
+each day's real option quotes, compare the market with the theo, and trade only
+when the gap is bigger than a conformal band.
+
+- `src/ivuq/pricing/heston_fd.py`: an exact finite-difference solver (the reference).
+- `src/ivuq/pinn/heston_cond.py`, `heston_cond_coupled.py`: the parameter-conditioned
+  networks (single network with a Black-Scholes control variate, and a coupled
+  solution + exercise-boundary pair). The networks used for trading are anchored
+  to exact-solver labels, and the pure-physics versions are kept as an ablation.
+- `src/ivuq/calibration/heston_calib.py`, `src/ivuq/trading/`: daily walk-forward
+  calibration, past-only adaptive conformal band, delta-hedged take-the-quote
+  backtest, random-signal controls.
+- `scripts/pull_dolthub.py` rebuilds the quote set from DoltHub (AAPL, NVDA, SPY,
+  CC BY-SA 4.0, not committed). `scripts/run_heston_theo.py`, `run_heston_study.py`,
+  `run_oos_test.py`, `make_signals.py` produce the results in `results/heston_trading/`.
+- `paper_heston/` holds the write-up; `paper_heston/make_tables.py` builds every table from the results.
+
+Result in one line: the band holds its coverage and the networks match the exact
+solver to about five cents per $100 of strike, but filled at the next close no
+theo (Heston or Black-Scholes) makes money, so there is no tradable edge on
+end-of-day data. The same-close profit is matched by a plain Black-Scholes theo.
 
 ## What's coming next
 
