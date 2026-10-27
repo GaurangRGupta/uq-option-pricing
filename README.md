@@ -5,8 +5,7 @@ fits it to each day's market quotes to get a *theo* (model fair value), puts a p
 theo, and trades only when the market quote falls outside the band. Everything is walk-forward, delta hedged and
 charged for costs, and tested against simple benchmarks and random trading.
 
-**Research paper (draft):** [`ivuq_research_paper_draft.pdf`](ivuq_research_paper_draft.pdf) ·
-**Technical guide:** [`docs/project_explained.html`](docs/project_explained.html) (open in a browser)
+**Research paper (draft):** [`ivuq_research_paper_draft.pdf`](ivuq_research_paper_draft.pdf)
 
 > **Status and honest summary.** Research code, results reported as found. The pricing network, the calibration and
 > the conformal band work as designed. Trading outside the band made money in the test months when filled at the
@@ -103,8 +102,7 @@ trades. Any difference is therefore due to the theo.
 
 ## 3. Methodology
 
-A longer walkthrough with diagrams is in [`docs/project_explained.html`](docs/project_explained.html) (open in a
-browser). This section is the complete method in order.
+This section is the complete method in order.
 
 ### 3.1 The model and the pricing equation
 
@@ -384,8 +382,6 @@ ivuq/
 ├── README.md
 ├── pyproject.toml
 ├── ivuq_research_paper_draft.pdf        research paper draft
-├── docs/
-│   └── project_explained.html           step-by-step technical guide
 │
 ├── src/ivuq/
 │   ├── pinn/                            physics-informed networks
@@ -450,7 +446,6 @@ ivuq/
 | `scripts/` | Training, calibration, study, out-of-sample test, live forward test, figures |
 | `results/heston_trading/` | Result tables and figures for this study |
 | `tests/` | Automated tests |
-| `docs/` | Technical guide |
 
 [Back to top](#contents)
 
